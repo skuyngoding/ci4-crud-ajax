@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-sm btn-primary">Add</button>
+<button type="button" class="btn btn-sm btn-primary btn-add">Add</button>
 
 <table class="table table-stripe">
   <thead>
@@ -16,9 +16,9 @@
         <td><?= $item['price']; ?></td>
         <td><?= $item['category']; ?></td>
         <td>
-          <button type="button" class="btn btn-sm btn-info">Detail</button>
-          <button type="button" class="btn btn-sm btn-success">Ubah</button>
-          <button type="button" class="btn btn-sm btn-danger">Delete</button>
+          <button type="button" class="btn btn-sm btn-info btn-detail">Detail</button>
+          <button type="button" class="btn btn-sm btn-success btn-update">Update</button>
+          <button type="button" class="btn btn-sm btn-danger btn-delete">Delete</button>
         </td>
       </tr>
     <?php endforeach; ?>
