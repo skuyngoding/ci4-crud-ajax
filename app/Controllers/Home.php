@@ -10,7 +10,6 @@ class Home extends BaseController
   public function __construct()
   {
     $this->model = new ItemsModel();
-    $this->db = \Config\Database::connect();
   }
 
 	public function index()
@@ -97,7 +96,7 @@ class Home extends BaseController
   {
     if ($this->request->isAJAX()) {
       $id = $this->request->getVar('id');
-      $data['item'] = $this->db->query("SELECT id FROM items WHERE id = ". $id ." ")->getRowArray();
+      $data['item'] = ['id' => $id];
 
       $output = view('items/delete-form', $data);
       echo json_encode($output);
