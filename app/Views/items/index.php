@@ -116,6 +116,59 @@
         })
       })
 
+      $(document).on("click", ".btn-detail", function() {
+        var item_id = $(this).data("id")
+
+        $.ajax({
+          url: "/home/get_item",
+          dataType: "json",
+          data: {
+            id: item_id
+          },
+          success: function(res) {
+            $(".view-modal").html(res)
+            $(".modal").modal("toggle")
+          }
+        })
+      })
+
+      $(document).on("click", ".btn-delete", function() {
+        var item_id = $(this).data("id")
+
+        $.ajax({
+          url: "/home/get_delete_item_modal",
+          dataType: "json",
+          type: "post",
+          data: {
+            id: item_id
+          },
+          success: function(res) {
+            $(".view-modal").html(res)
+            $(".modal").modal("toggle")
+          }
+        })
+      })
+
+      $(document).on("submit", "#form-data", function(e) {
+        e.preventDefault()
+
+        $.ajax({
+          url: $(this).attr("action"),
+          type: $(this).attr("method"),
+          data: $(this).serialize(),
+          dataType: "json",
+          success: function(res) {
+            if (res.status) {
+              Toast.fire({
+                icon: 'success',
+                title: 'Data berhasil dihapus'
+              })
+              source_data()
+            }
+          }
+        })
+      })
+
     })
   </script>
 </body>

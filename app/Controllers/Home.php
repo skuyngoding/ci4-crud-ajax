@@ -10,6 +10,7 @@ class Home extends BaseController
   public function __construct()
   {
     $this->model = new ItemsModel();
+    $this->db = \Config\Database::connect();
   }
 
 	public function index()
@@ -28,6 +29,19 @@ class Home extends BaseController
       ];
 
       $output = view('items/source-data', $data);
+      echo json_encode($output);
+    } else {
+      throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+  }
+
+  public function get_item()
+  {
+    if ($this->request->isAJAX()) {
+      $id = $this->request->getVar('id');
+      $data['item'] = $this->model->find($id);
+
+      $output = view('items/detail', $data);
       echo json_encode($output);
     } else {
       throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -78,4 +92,25 @@ class Home extends BaseController
       echo json_encode(['status' => TRUE]);
     }
   }
+
+  public function get_delete_item_modal()
+  {
+    if ($this->request->isAJAX()) {
+      $id = $this->request->getVar('id');
+      $data['item'] = $this->db->query("SELECT id FROM items WHERE id = ". $id ." ")->getRowArray();
+
+      $output = view('items/delete-form', $data);
+      echo json_encode($output);
+    } else {
+      throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+  }
+
+  public function delete_item()
+  {
+    $id = $this->request->getPost('id');
+    $this->model->where('id', $id)->delete();
+    echo json_encode(['status' => TRUE]);
+  }
+
 }
