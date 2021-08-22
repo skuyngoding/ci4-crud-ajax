@@ -1,5 +1,12 @@
 # CRUD AJAX - CODEIGNITER 4
-A simple app that used ajax for CRUD in CodeIgniter 4.
+A simple CRUD app with jQuery AJAX in CodeIgniter 4.
+
+## Features
+* Show all items
+* Show item
+* Insert new item
+* Delete an item
+* Update an item
 
 # CodeIgniter 4 Application Starter
 
