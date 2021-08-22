@@ -112,4 +112,54 @@ class Home extends BaseController
     echo json_encode(['status' => TRUE]);
   }
 
+  public function get_update_item_modal()
+  {
+    if ($this->request->isAJAX()) {
+      $id = $this->request->getVar('id');
+      $data['item'] = $this->model->find($id); // better: this->db->query("SELECT id, name, price, category, detail ..)
+      $data['categories'] = ['kaos', 'kemeja'];
+
+      $output = view('items/update-form', $data);
+      echo json_encode($output);
+    } else {
+      throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+  }
+
+  public function update_item()
+  {
+    $rules = [
+      'name' => 'required',
+      'category' => 'required',
+    ];
+
+    $price = $this->request->getPost('price');
+    if ($price) {
+      $rules['price'] = 'numeric';
+    }
+
+    if (!$this->validate($rules)) {
+      $errors = [
+        'name' => $this->validation->getError('name'),
+        'price' => $this->validation->getError('price'),
+        'category' => $this->validation->getError('category'),
+      ];
+
+      $output = [
+        'status' => FALSE,
+        'errors' => $errors
+      ];
+      echo json_encode($output);
+    } else {
+      $this->model->save([
+        'id' => $this->request->getPost('id'),
+        'name' => $this->request->getPost('name'),
+        'price' => $price,
+        'category' => $this->request->getPost('category'),
+        'detail' => $this->request->getPost('detail'),
+      ]);
+      echo json_encode(['status' => TRUE]);
+    }
+  }
+
 }

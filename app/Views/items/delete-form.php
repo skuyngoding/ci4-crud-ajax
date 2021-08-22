@@ -4,7 +4,7 @@
       <div class="modal-header">
         <h5 class="modal-title">Delete Item</h5>
       </div>
-      <?= form_open('home/delete_item', ['id' => 'form-data']); ?>
+      <?= form_open('home/delete_item', ['id' => 'form-delete']); ?>
       <div class="modal-body">
         <?= csrf_field(); ?>
         <input type="hidden" name="id" id="item_id" value="<?= $item["id"]; ?>">

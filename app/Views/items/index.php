@@ -149,7 +149,7 @@
         })
       })
 
-      $(document).on("submit", "#form-data", function(e) {
+      $(document).on("submit", "#form-delete", function(e) {
         e.preventDefault()
 
         $.ajax({
@@ -159,6 +159,7 @@
           dataType: "json",
           success: function(res) {
             if (res.status) {
+              $(".modal").modal("toggle")
               Toast.fire({
                 icon: 'success',
                 title: 'Data berhasil dihapus'
@@ -168,6 +169,61 @@
           }
         })
       })
+
+      $(document).on("click", ".btn-update", function() {
+        var item_id = $(this).data("id")
+
+        $.ajax({
+          url: "/home/get_update_item_modal",
+          dataType: "json",
+          type: "post",
+          data: {
+            id: item_id
+          },
+          success: function(res) {
+            $(".view-modal").html(res)
+            $(".modal").modal("toggle")
+          }
+        })
+      })
+
+      $(document).on("submit", "#form-update", function(e) {
+        e.preventDefault()
+
+        $.ajax({
+          url: $(this).attr("action"),
+          type: $(this).attr("method"),
+          data: $(this).serialize(),
+          dataType: "json",
+          success: function(res) {
+            if (res.status) {
+              $(".modal").modal("toggle")
+              Toast.fire({
+                icon: 'success',
+                title: 'Data berhasil diperbarui'
+              })
+              source_data()
+            } else {
+              $.each(res.errors, function(key, value) {
+                $('[name="' + key + '"]').addClass('is-invalid')
+                $('[name="' + key + '"]').next().text(value)
+                if (value == "") {
+                  $('[name="' + key + '"]').removeClass('is-invalid')
+                  $('[name="' + key + '"]').addClass('is-valid')
+                }
+              })
+            }
+          }
+        })
+
+        $("#form-update input").on("keyup", function() {
+          $(this).removeClass('is-invalid is-valid')
+        })
+        $("#form-update input").on("click", function() {
+          $(this).removeClass('is-invalid is-valid')
+        })
+      })
+
 
     })
   </script>
